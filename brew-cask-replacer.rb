@@ -21,10 +21,12 @@ Dir.glob('/Applications/*.app').each do |path|
 
   puts "Installing #{token}..."
   begin
-    FileUtils.mv(path, File.expand_path('~/.Trash/'))
+    puts "Skipping app deletion..."
+    # FileUtils.mv(path, File.expand_path('~/.Trash/'))
   rescue Errno::EPERM, Errno::EEXIST
     puts "ERROR: Could not move #{path} to Trash"
     next
   end
-  puts `brew install --cask #{token} $(echo $HOMEBREW_CASK_OPTS)`
+  File.write('Brewfile', 'cask "#{token}"', mode: 'a+')
+  #puts `brew install --cask #{token} $(echo $HOMEBREW_CASK_OPTS)`
 end
